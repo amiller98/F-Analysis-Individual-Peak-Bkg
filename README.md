@@ -1,6 +1,6 @@
 # PIGEanalysis
 
-Usage
+**Usage**
 
 Program starts at batchGSpec function. Input is a folder containing spectra of interest. 
 An appropriate spectrum file reader function should be provided. We currently have readchn for the binary format.
