@@ -1,21 +1,27 @@
 function output = peakFit(data,peaks_OI)
 x = data.energy';
-y = data.count;
+y = data.counts;
 gausfcn = @(b,x) b(1) .* exp(-((x-b(2)).^2)./b(3));                         
 SSECF = @(b,x,y) sum((y - gausfcn(b,x)).^2);
 
 %smooth_y = movmean(y,10);
 
-[pks,locs,w,p] = findpeaks(y, 'MinPeakDist',10, 'MinPeakHeight',20, 'Threshold', 0, ...
-    'MinPeakProminence', 100, 'WidthReference','halfheight');          
+[pks,locs,w,p] = findpeaks(y, 'MinPeakDist',100, 'MinPeakHeight',20, 'Threshold', 1000, ...
+    'MinPeakProminence', 1000, 'WidthReference','halfheight');          
 
 q = x(locs); % energy of peaks
-%peaks_OI = [271 1156 373];
 %% Select Peaks of Interest
 peaksfound = zeros(1,length(peaks_OI));
+realpeak = peaksfound;
 for i = 1:length(peaks_OI)
     [val,idx] = min(abs(peaks_OI(i) - q));
     peaksfound(1,i) = idx;
+    
+    if abs(peaks_OI(i) - idx) > 10
+        realpeak(1,i) = 0; % not a real peak
+    else 
+        realpeak(1,i) = 1; % a real peak
+    end
     
 end
 output = zeros(length(peaks_OI),1);
@@ -24,6 +30,7 @@ counter = 1;
 hold on
 %% Perform Fits on Selected Peaks
 for k1 = peaksfound
+    if realpeak(1,k1) == 1
         idxrng = locs(k1)-25 : locs(k1)+25;
         %%%%%%%%%%%%%%%% Individal background removal 
 
@@ -57,6 +64,10 @@ for k1 = peaksfound
         output(counter,1) = AUC(k1);
         counter = counter+1;
         plot(x_gaussian, gausfcn(Parms(:,k1),x_gaussian), 'LineWidth',1)
+    else
+        output(counter,1) = 0;
+        counter = counter+1;
+    end
 end
 hold on
 plot(x, y, 'LineWidth',1)

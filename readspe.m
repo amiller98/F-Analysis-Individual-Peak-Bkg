@@ -14,7 +14,7 @@ function spedat = readspe(fname)
     slope = str2num(fit{2,1});
     
     channels = 1:8192;
-    data.energy = slope * channels + intercept;
+    data.energy = (slope * channels + intercept)';
     
     %% Pull Data
     idxstart = 13;
