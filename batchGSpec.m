@@ -1,5 +1,10 @@
 function batchGSpec(folderDir)
+%% Input Currents
+currents = [50.3 49.2 46.1];
+currents_file = [2 4 8]; % which number run does each current correspond to
+% chronological order please
 
+%% File set up
 set(0,'DefaultFigureWindowStyle','docked')
 
 d = struct2cell(dir([fullfile(folderDir),'/*.spe']));
@@ -38,8 +43,6 @@ sorted_namelist = nameList(key)';
 
 %% Currents
 file_num = 1:file_count;
-currents = [50.3 49.2 46.1];
-currents_file = [2 4 8];
 inter_currents = interp1(currents_file, currents,file_num, 'linear','extrap')';
 
 %% Continuing Analysis
