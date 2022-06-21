@@ -3,14 +3,10 @@
 **Usage**
 
 Program starts at batchGSpec function. Input is a folder containing spectra of interest. 
-An appropriate spectrum file reader function should be provided. We currently have readchn for the binary format.
-One for .spe files is being developed.
+An appropriate spectrum file reader function is provided. .SPE or .CHN files may be used.
 
-Peaks of interest are specified. NOTE: In upcoming versions, we may completely ignore the conversion from channel to energy and work with
-just the channel numbers after we've identified which correspond to 109, 197, 660 keV. 
+Current set up outputs summary file with argon-normalized fluorine counts per uC + error along with diagnostic argon information.
 
-Peaks are fitted and AUC are divided by the live-time corresponding to that spectra.
+In Progress: Currently ensuring that files are properly associated with their extrapolated current values during the normalization process.
 
-NOTE: planning on creating an input for the average current for each run.
-
-A normalization routine ensues and the calculations are ejected into a summary spreadsheet 
+Branches: A chlorine-specific analysis is currently being developed as a branch. A voigt-fitting procedure is a potential branch.
