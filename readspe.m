@@ -21,9 +21,13 @@ function spedat = readspe(fname)
     data.slope = slope;
     data.intercept = intercept;
     
+    %% Pull Date and Time
+    t_idx = find(contains(multiline,'DATE_MEA'))+1;
+    datestring = strip(string(multiline(t_idx)));
+    data.time = datetime(datestring,'InputFormat','MM/dd/yyyy HH:mm:ss');
     %% Pull Data
-    idxstart = 13;
-    idxend = 8204;
+    idxstart = find(contains(multiline,'DATA'))+2;
+    idxend = idxstart+8191;
     counts = multiline(idxstart:idxend,1);
     data.counts = str2double(counts);
     

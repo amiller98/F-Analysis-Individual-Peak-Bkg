@@ -11,30 +11,33 @@ file_count = numel(nameList);
 peaksOI = [109 197 770 1219]; % list of peaks of interest in keV
 sigma = [14 14 14 14]; % uncertainty in energy
 AUC_allfiles = [];
+datetime_allfiles = [];
 
 %% Pull Count Rates for Peaks Of Interest
 for i=1:file_count
     %clf
-    figure(i);
+    %figure(i);
     file = string(fullfile(folderDir, nameList(i)));
     spectrum = readspe(file);
     AUC = AUC_finder(spectrum,peaksOI, sigma);
 
     AUC_allfiles = [AUC_allfiles ; AUC];
+    datetime_allfiles = [datetime_allfiles ; spectrum.time];
     
 end
 
-%% Errors and Currents
+%% Sort files by time measurement took place
+[~, key] = sort(datetime_allfiles);
+r = 1:file_count;
+r(key) = r;
+termin = width(AUC_allfiles) + 1;
+AUC_allfiles = sortrows([AUC_allfiles,r'],termin);
 
-% Generate currents for each file
+%% Currents
 file_num = 1:file_count;
 currents = [50.3 49.2 46.1];
 currents_file = [2 5 7];
 inter_currents = interp1(currents_file, currents,file_num, 'linear','extrap')';
-
-% calculate error of peak
-% calculate error of background
-% combine errors
 
 %% Continuing Analysis
 fluorine1 = AUC_allfiles(:,1);
