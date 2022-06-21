@@ -8,15 +8,15 @@ nameList = d(1,:);
 file_count = numel(nameList);
 
 %% Information on peaks of interest
-peaksOI = [109 197 770 1219]; % list of peaks of interest in keV
-sigma = [14 14 14 14]; % uncertainty in energy
+peaksOI = [109 197 770]; % list of peaks of interest in keV
+sigma = [14 14 20]; % uncertainty in energy
 AUC_allfiles = [];
 datetime_allfiles = [];
 
 %% Pull Count Rates for Peaks Of Interest
 for i=1:file_count
     %clf
-    %figure(i);
+    figure(i);
     file = string(fullfile(folderDir, nameList(i)));
     spectrum = readspe(file);
     AUC = AUC_finder(spectrum,peaksOI, sigma);
@@ -32,18 +32,20 @@ r = 1:file_count;
 r(key) = r;
 termin = width(AUC_allfiles) + 1;
 AUC_allfiles = sortrows([AUC_allfiles,r'],termin);
+AUC_allfiles = AUC_allfiles(:,1:end-1);
+AUC_allfiles = max(AUC_allfiles,0);
+sorted_namelist = nameList(key)';
 
 %% Currents
 file_num = 1:file_count;
 currents = [50.3 49.2 46.1];
-currents_file = [2 5 7];
+currents_file = [2 4 8];
 inter_currents = interp1(currents_file, currents,file_num, 'linear','extrap')';
 
 %% Continuing Analysis
 fluorine1 = AUC_allfiles(:,1);
 fluorine2 = AUC_allfiles(:,2);
 argon = AUC_allfiles(:,3);
-chlorine = AUC_allfiles(:,4);
 livetimes = AUC_allfiles(:,end);
 
 % sum fluorine counts and error
@@ -66,14 +68,15 @@ ar_norm_counts_uC_err = 1.96*sqrt(totalF_err.^2 + ar_I_norm_err.^2).*ar_norm_cou
 % filename, livetime, argon counts, Ar norm, Ar norm err
 sz = [file_count 6];
 vartypes = ["string" "double" "double" "double" "double" "double"];
-varnames = ["Sample" "Livetime (s)" "770 keV counts" "Ar-Norm counts/uC" "error" "1219 keV counts"];
+varnames = ["Sample" "Livetime (s)" "770 keV counts" "Ar-Norm counts/uC" "error" "Current"];
 output = table('Size',sz, 'VariableTypes', vartypes, 'VariableNames', varnames);
-output.(1) = nameList';
+output.(1) = sorted_namelist;
 output.(2) = livetimes;
 output.(3) = argon;
 output.(4) = ar_norm_counts_uC;
 output.(5) = ar_norm_counts_uC_err;
-output.(6) = chlorine;
+output.(6) = inter_currents;
 
-writetable(output,'PIGEanalysis.xlsx','Sheet',1);
+file = string(fullfile(folderDir, 'PIGEanalysis.xlsx'));
+writetable(output,file,'Sheet',1);
 end
