@@ -9,12 +9,17 @@ function spedat = readspe(fname)
     data.realtime = str2num(timing{2,1});
     
     %% Pull Energy Fit
-    fit = split(multiline(8221),' ');
+    
+    e_idx = find(contains(multiline,'ENER'))+1;
+    fit = split(multiline(e_idx),' ');
     intercept = str2num(fit{1,1});
     slope = str2num(fit{2,1});
     
     channels = 1:8192;
+    data.channels = channels;
     data.energy = (slope * channels + intercept)';
+    data.slope = slope;
+    data.intercept = intercept;
     
     %% Pull Data
     idxstart = 13;

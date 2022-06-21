@@ -17,7 +17,7 @@ for i = 1:length(peaks_OI)
     [val,idx] = min(abs(peaks_OI(i) - q));
     peaksfound(1,i) = idx;
     
-    if abs(peaks_OI(i) - idx) > 10
+    if abs(peaks_OI(i) - idx) > 7
         realpeak(1,i) = 0; % not a real peak
     else 
         realpeak(1,i) = 1; % a real peak
