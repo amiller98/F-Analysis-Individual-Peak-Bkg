@@ -9,13 +9,13 @@ file_count = numel(nameList);
 
 %% Information on peaks of interest
 peaksOI = [109 197 770 1219]; % list of peaks of interest in keV
-sigma = [14 14 14 7]; % uncertainty in energy
+sigma = [14 14 14 14]; % uncertainty in energy
 AUC_allfiles = [];
 
 %% Pull Count Rates for Peaks Of Interest
 for i=1:file_count
     %clf
-    %figure(i);
+    figure(i);
     file = string(fullfile(folderDir, nameList(i)));
     spectrum = readspe(file);
     AUC = AUC_finder(spectrum,peaksOI, sigma);
