@@ -1,7 +1,7 @@
 function batchGSpec(folderDir)
 %% Input Currents
-currents = [50.3 49.2 46.1];
-currents_file = [2 4 8]; % which number run does each current correspond to
+currents = [85.9 90.8 85.5];
+currents_file = [2 35 47]; % which number run does each current correspond to
 % chronological order please
 
 %% File set up
@@ -13,8 +13,9 @@ nameList = d(1,:);
 file_count = numel(nameList);
 
 %% Information on peaks of interest
-peaksOI = [109 197 770]; % list of peaks of interest in keV
-sigma = [14 14 20]; % uncertainty in energy
+peaksOI = [383 688 2694]; % based on channels
+%peaksOI = [109 197 770]; % list of peaks of interest in keV
+sigma = [20 20 20]; % uncertainty in energy
 AUC_allfiles = [];
 datetime_allfiles = [];
 

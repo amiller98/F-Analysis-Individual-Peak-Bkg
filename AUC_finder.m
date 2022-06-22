@@ -5,15 +5,19 @@ AUC = zeros(1,num_peaks+1);
 counts = spectrum.counts;
 hold on
 for i = 1:num_peaks
-    mean_cn = round((peaksOI(i) - spectrum.intercept)/spectrum.slope);
-    idxrng = mean_cn-2*sigma(i):mean_cn+2*sigma(i);
+    mean_cn = peaksOI(i);
+    %mean_cn = round((peaksOI(i) - spectrum.intercept)/spectrum.slope);
+    lowidx = (mean_cn-2*sigma(i));
+    highidx = (mean_cn+2*sigma(i));
+    idxrng = lowidx:highidx;
     
     total_auc = counts(idxrng);
     
-    low_counts = counts(mean_cn-2*sigma(i));
-    high_counts = counts(mean_cn+2*sigma(i));
+    avg_width = 3;
+    low_counts = mean(counts(lowidx-avg_width:lowidx+avg_width));
+    high_counts = mean(counts(highidx-avg_width:highidx+avg_width));
     
-    x = [(mean_cn-2*sigma(i)) (mean_cn+2*sigma(i))];
+    x = [lowidx highidx];
     y = [low_counts high_counts];
     
     fit = polyfit(x,y,1);
