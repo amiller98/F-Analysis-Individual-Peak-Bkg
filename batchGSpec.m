@@ -81,6 +81,9 @@ output.(4) = ar_norm_counts_uC;
 output.(5) = ar_norm_counts_uC_err;
 output.(6) = inter_currents;
 
-file = string(fullfile(folderDir, 'PIGEanalysis.xlsx'));
+splitDir = split(folderDir,'/');
+properFileName = [splitDir{end,1} '_F_results.xlsx'];
+file = string(fullfile(folderDir, properFileName));
+
 writetable(output,file,'Sheet',1);
 end
