@@ -1,7 +1,7 @@
 function batchGSpec(folderDir)
 %% Input Currents
-currents = [85.9 90.8 85.5];
-currents_file = [2 35 47]; % which number run does each current correspond to
+currents = [81.6 77.5 79.0];
+currents_file = [2 38 77]; % which number run does each current correspond to
 % chronological order please
 
 %% File set up
@@ -66,7 +66,7 @@ ar_I_norm_err = ar_rate_err;
 
 % (total F counts)/(Ar-Norm Current) * 1000 / livetime
 ar_norm_counts_uC = totalF./ar_I_norm*1000./livetimes;
-ar_norm_counts_uC_err = 1.96*sqrt(totalF_err.^2 + ar_I_norm_err.^2).*ar_norm_counts_uC*1000./livetimes;
+ar_norm_counts_uC_err = 1.96*sqrt(totalF_err.^2 + ar_I_norm_err.^2).*ar_norm_counts_uC;
 
 %% Formatting Output
 % filename, livetime, argon counts, Ar norm, Ar norm err
