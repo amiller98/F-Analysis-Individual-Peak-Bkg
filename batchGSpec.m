@@ -58,7 +58,7 @@ totalF_err = sqrt(sqrt(fluorine1).^2 + sqrt(fluorine2).^2)./totalF;
 
 % divide argon counts by live time
 ar_rate = argon./livetimes;
-ar_rate_err = sqrt(argon)./argon./livetimes;
+ar_rate_err = sqrt(argon)./argon;
 
 % take each Ar/s and divide by average Ar/s. multiply result by current
 ar_I_norm = ar_rate./mean(ar_rate).*inter_currents;
