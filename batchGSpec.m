@@ -1,7 +1,7 @@
 function batchGSpec(folderDir)
 %% Input Currents
-currents = [81.6 77.5 79.0];
-currents_file = [2 38 77]; % which number run does each current correspond to
+currents = [53 52 53 52 51];
+currents_file = [1 20 21 50 60]; % which number run does each current correspond to
 % chronological order please
 
 %% File set up
@@ -15,7 +15,7 @@ file_count = numel(nameList);
 %% Information on peaks of interest
 peaksOI = [383 688 2694]; % based on channels
 %peaksOI = [109 197 770]; % list of peaks of interest in keV
-sigma = [20 20 20]; % uncertainty in energy
+sigma = [14 14 14]; % uncertainty in energy
 AUC_allfiles = [];
 datetime_allfiles = [];
 
@@ -54,11 +54,11 @@ livetimes = AUC_allfiles(:,end);
 
 % sum fluorine counts and error
 totalF = fluorine1+fluorine2;
-totalF_err = sqrt(sqrt(fluorine1).^2 + sqrt(fluorine2).^2)./totalF;
+totalF_err = sqrt(sqrt(fluorine1).^2 + sqrt(fluorine2).^2)./totalF; %relative err
 
 % divide argon counts by live time
 ar_rate = argon./livetimes;
-ar_rate_err = sqrt(argon)./argon;
+ar_rate_err = sqrt(argon)./argon; %relative err
 
 % take each Ar/s and divide by average Ar/s. multiply result by current
 ar_I_norm = ar_rate./mean(ar_rate).*inter_currents;
