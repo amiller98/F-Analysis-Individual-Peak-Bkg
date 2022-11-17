@@ -60,8 +60,8 @@ totalF_err = sqrt(sqrt(fluorine1).^2 + sqrt(fluorine2).^2)./totalF; %relative er
 argon_error = sqrt(argon)./argon; %relative err
 
 % calculate counts/uC
-denominator = current.*realtimes.*argon.*livetimes;
-norm_C_uC = 1000.*totalF.*argon(current_index)*realtimes(current_index)./denominator;
+denominator = current.*livetimes(current_index).*argon;
+norm_C_uC = 1000.*totalF.*argon(current_index)./denominator;
 norm_C_uC_err = norm_C_uC.*sqrt(argon_error.^2 + totalF_err.^2);
 
 
