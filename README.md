@@ -5,8 +5,8 @@
 Program starts at batchGSpec function. Input is a folder containing spectra of interest. 
 An appropriate spectrum file reader function is provided. .SPE or .CHN files may be used.
 
-Current set up outputs summary file with argon-normalized fluorine counts per uC + error along with diagnostic argon information.
+The main branch requires multiple current inputs with the corresponding file indexes.
 
-In Progress: Currently ensuring that files are properly associated with their extrapolated current values during the normalization process.
+The single entry branch requires a single current value with the index. It will use the dead-time correct corrected argon values to determine the appropriate current value for each sample. It reports the dead-time corrected fluorine counts per uC of charge deposited. 
 
-Branches: A chlorine-specific analysis is currently being developed as a branch. A voigt-fitting procedure is a potential branch.
+***The recommended branch is the single entry branch.***
