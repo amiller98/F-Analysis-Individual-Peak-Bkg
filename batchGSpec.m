@@ -1,7 +1,10 @@
 function batchGSpec(folderDir)
 %% Input Currents
-currents = [53 52 53 52 51];
-currents_file = [1 20 21 50 60]; % which number run does each current correspond to
+
+current = 45; % single current value in nA
+current_index = 5; % single value of which file corresponds to this current
+
+% which number run does each current correspond to
 % chronological order please
 
 %% File set up
@@ -42,45 +45,38 @@ AUC_allfiles = AUC_allfiles(:,1:end-1);
 AUC_allfiles = max(AUC_allfiles,0);
 sorted_namelist = nameList(key)';
 
-%% Currents
-file_num = 1:file_count;
-inter_currents = interp1(currents_file, currents,file_num, 'linear','extrap')';
-
 %% Continuing Analysis
 fluorine1 = AUC_allfiles(:,1);
 fluorine2 = AUC_allfiles(:,2);
 argon = AUC_allfiles(:,3);
-livetimes = AUC_allfiles(:,end);
+livetimes = AUC_allfiles(:,end-1);
+realtimes = AUC_allfiles(:,end);
 
 % sum fluorine counts and error
 totalF = fluorine1+fluorine2;
 totalF_err = sqrt(sqrt(fluorine1).^2 + sqrt(fluorine2).^2)./totalF; %relative err
 
 % divide argon counts by live time
-ar_rate = argon./livetimes;
-ar_rate_err = sqrt(argon)./argon; %relative err
+argon_error = sqrt(argon)./argon; %relative err
 
-% take each Ar/s and divide by average Ar/s. multiply result by current
-ar_I_norm = ar_rate./mean(ar_rate).*inter_currents;
-ar_I_norm_err = ar_rate_err;
+% calculate counts/uC
+denominator = current.*livetimes(current_index).*argon;
+norm_C_uC = 1000.*totalF.*argon(current_index)./denominator;
+norm_C_uC_err = norm_C_uC.*sqrt(argon_error.^2 + totalF_err.^2);
 
-% (total F counts)/(Ar-Norm Current) * 1000 / livetime
-ar_norm_counts_uC = totalF./ar_I_norm*1000./livetimes;
-ar_norm_counts_uC_err = 1.96*sqrt(totalF_err.^2 + ar_I_norm_err.^2).*ar_norm_counts_uC;
 
 %% Formatting Output
 % filename, livetime, argon counts, Ar norm, Ar norm err
 sz = [file_count 6];
 vartypes = ["string" "double" "double" "double" "double" "double"];
-varnames = ["Sample" "Livetime (s)" "770 keV counts" "Ar-Norm counts/uC" "error" "Current"];
+varnames = ["Sample" "Realtime (s)" "770 keV counts" "Ar-Norm counts/uC" "error" "Fluorine Counts"];
 output = table('Size',sz, 'VariableTypes', vartypes, 'VariableNames', varnames);
 output.(1) = sorted_namelist;
-output.(2) = livetimes;
+output.(2) = realtimes;
 output.(3) = argon;
-output.(4) = ar_norm_counts_uC;
-output.(5) = ar_norm_counts_uC_err;
-output.(6) = inter_currents;
-
+output.(4) = norm_C_uC;
+output.(5) = norm_C_uC_err;
+output.(6) = totalF;
 splitDir = split(folderDir,{'\' '/'});
 properFileName = [splitDir{end,1} '_F_results.xlsx'];
 file = string(fullfile(folderDir, properFileName));

@@ -1,7 +1,7 @@
 function data = AUC_finder(spectrum,peaksOI, sigma)
 
 num_peaks = length(peaksOI);
-AUC = zeros(1,num_peaks+1);
+AUC = zeros(1,num_peaks+2);
 counts = spectrum.counts;
 hold on
 for i = 1:num_peaks
@@ -30,6 +30,7 @@ for i = 1:num_peaks
 end
 hold off
 AUC(1,num_peaks+1) = spectrum.livetime;
+AUC(1,num_peaks+2) = spectrum.realtime;
 data = AUC;
 end
 
