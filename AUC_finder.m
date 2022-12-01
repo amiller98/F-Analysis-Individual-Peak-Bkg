@@ -14,7 +14,7 @@ for i = 1:num_peaks
     [peakIndex,prominence]= islocalmax(counts(range));
     [maxValue,maxIndex] = max(prominence);
     
-    if maxValue > 40
+    if maxValue > 20
         mean_cn = mean_cn-(searchWidth-maxIndex);
     end
     
