@@ -6,6 +6,18 @@ counts = spectrum.counts;
 hold on
 for i = 1:num_peaks
     mean_cn = peaksOI(i);
+    
+    % sub-protocol to adjust mean_cn to reflect actual location of peak
+    % assuming the peak actually exists.
+    searchWidth = 50;
+    range = (mean_cn-searchWidth):(mean_cn+searchWidth);
+    [peakIndex,prominence]= islocalmax(counts(range));
+    [maxValue,maxIndex] = max(prominence);
+    
+    if maxValue > 40
+        mean_cn = mean_cn-(searchWidth-maxIndex);
+    end
+    
     %mean_cn = round((peaksOI(i) - spectrum.intercept)/spectrum.slope);
     lowidx = (mean_cn-2*sigma(i));
     highidx = (mean_cn+2*sigma(i));
