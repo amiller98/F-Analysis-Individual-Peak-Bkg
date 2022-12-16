@@ -16,9 +16,10 @@ nameList = d(1,:);
 file_count = numel(nameList);
 
 %% Information on peaks of interest
-peaksOI = [4200 6100 2694];% based on channels
+% peaksOI = [4200 6100 2694];% chlorine channels
+peaksOI = [379 680 2694]; % fluorine channels
 
-%channel for 383 688 2694 for fluorine
+
 %peaksOI = [109 197 770]; % list of peaks of interest in keV
 sigma = [14 14 14]; % uncertainty in energy
 AUC_allfiles = [];

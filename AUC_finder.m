@@ -7,14 +7,14 @@ hold on
 for i = 1:num_peaks
     mean_cn = peaksOI(i);
     
-    % sub-protocol to adjust mean_cn to reflect actual location of peak
-    % assuming the peak actually exists.
+% sub-protocol to adjust mean_cn to reflect actual location of peak
+% Checks to make sure peak actually exists.
     searchWidth = 50;
     range = (mean_cn-searchWidth):(mean_cn+searchWidth);
     [peakIndex,prominence]= islocalmax(counts(range));
     [maxValue,maxIndex] = max(prominence);
     
-    if maxValue > 40
+    if maxValue > 20
         mean_cn = mean_cn-(searchWidth-maxIndex);
     end
     
